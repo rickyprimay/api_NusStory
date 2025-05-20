@@ -11,7 +11,7 @@ class AuthController extends Controller
 {
     public function index()
     {
-        return view('auth.login');
+        return view('pages.authentication.login');
     }
 
     public function login(Request $request)
@@ -30,5 +30,10 @@ class AuthController extends Controller
         }
 
         return redirect()->back()->with('error_toast', 'Email atau password salah');
+    }
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('login');
     }
 }
