@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('historical_figures', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('description');
+            $table->text('content');
+            $table->integer('born_year');
+            $table->integer('died_year');
+            $table->string('thumbnail');
+            $table->string('video_url');
+            $table->foreignId('province_id')->constrained('provinces')->onDelete('cascade');
+            $table->foreignId('city_id')->constrained('cities')->onDelete('cascade');
+            $table->string('slug');
             $table->timestamps();
         });
     }
