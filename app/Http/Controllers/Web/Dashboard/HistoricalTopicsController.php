@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web\Dashboard;
 
+use App\Helpers\ConvertToEmbed;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\HistoricalTopics;
@@ -12,17 +13,6 @@ use Illuminate\Support\Str;
 
 class HistoricalTopicsController extends Controller
 {
-    private function convertToEmbedUrl($url)
-    {
-        $videoId = null;
-
-        if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $url, $matches)) {
-            $videoId = $matches[1];
-        }
-
-        return $videoId ? 'https://www.youtube.com/embed/' . $videoId : $url;
-    }
-
     public function index()
     {
         $historicalTopics = HistoricalTopics::all();
@@ -56,7 +46,7 @@ class HistoricalTopicsController extends Controller
 
         $data = $request->all();
         $data['slug'] = Str::slug($data['title']);
-        $data['video_url'] = $this->convertToEmbedUrl($data['video_url']);
+        $data['video_url'] = ConvertToEmbed::youtube($data['video_url']);
 
         if ($request->hasFile('thumbnail')) {
             $file = $request->file('thumbnail');
@@ -98,7 +88,7 @@ class HistoricalTopicsController extends Controller
 
         $historicalTopic = HistoricalTopics::findOrFail($id);
         $data = $request->all();
-        $data['video_url'] = $this->convertToEmbedUrl($data['video_url']);
+        $data['video_url'] = ConvertToEmbed::youtube($data['video_url']);
 
         if ($request->hasFile('thumbnail')) {
             $file = $request->file('thumbnail');
