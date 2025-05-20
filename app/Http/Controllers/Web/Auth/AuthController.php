@@ -26,7 +26,7 @@ class AuthController extends Controller
         }
 
         if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->route('dashboard')->with('success_toast', 'Login Berhasil');
+            return redirect()->route('dashboard')->with('success_toast', 'Login successful');
         }
 
         return redirect()->back()->with('error_toast', 'Email atau password salah');
