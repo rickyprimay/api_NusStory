@@ -51,6 +51,18 @@
                     </li>
                     
                     <li>
+                        <a href="{{ route('categories.index') }}"
+                           class="group relative flex items-center gap-2.5 rounded-md px-4 py-2 font-medium duration-300 ease-in-out
+                            hover:bg-graydark hover:text-white
+                            {{ request()->routeIs('categories.*') ? 'bg-graydark text-white' : 'text-black' }}">
+                           
+                           <i class="fa-solid fa-tags"></i>
+                        
+                            Categories
+                        </a>
+                    </li>
+
+                    <li>
                         <a href="{{ route('historical-topics.index') }}"
                            class="group relative flex items-center gap-2.5 rounded-md px-4 py-2 font-medium duration-300 ease-in-out
                             hover:bg-graydark hover:text-white

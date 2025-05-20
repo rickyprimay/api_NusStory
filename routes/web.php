@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Web\Auth\AuthController;
+use App\Http\Controllers\Web\Dashboard\CategoryController;
 use App\Http\Controllers\Web\Dashboard\DashboardController;
 use App\Http\Controllers\Web\Dashboard\HistoricalFigureController;
 use App\Http\Controllers\Web\Dashboard\HistoricalTopicsController;
@@ -28,5 +29,14 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
         Route::get('/{id}/edit', [HistoricalFigureController::class, 'edit'])->name('historical-figure.edit');
         Route::put('/{id}', [HistoricalFigureController::class, 'update'])->name('historical-figure.update');
         Route::delete('/{id}', [HistoricalFigureController::class, 'destroy'])->name('historical-figure.destroy');
+    });
+
+    Route::prefix('categories')->group(function () {
+        Route::get('/', [CategoryController::class, 'index'])->name('categories.index');
+        Route::get('/create', [CategoryController::class, 'create'])->name('categories.create');
+        Route::post('/', [CategoryController::class, 'store'])->name('categories.store');
+        Route::delete('/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+        Route::get('/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+        Route::put('/{id}', [CategoryController::class, 'update'])->name('categories.update');
     });
 });
