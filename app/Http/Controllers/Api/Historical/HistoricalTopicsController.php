@@ -13,27 +13,30 @@ class HistoricalTopicsController extends Controller
     private function convertToEmbedUrl($url)
     {
         $videoId = null;
-        
+
         if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $url, $matches)) {
             $videoId = $matches[1];
         }
-        
+
         if ($videoId) {
-            return "https://www.youtube.com/embed/" . $videoId;
+            return 'https://www.youtube.com/embed/' . $videoId;
         }
-        
-        return $url; 
+
+        return $url;
     }
 
     public function index()
     {
         $historicalTopics = HistoricalTopics::all();
 
-        return response()->json([
-            'success'   => true,
-            'message'   => 'Historical Topics Retrieved Successfully',
-            'data'      => $historicalTopics
-        ], 200);
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'Historical Topics Retrieved Successfully',
+                'data' => $historicalTopics,
+            ],
+            200,
+        );
     }
 
     public function getById($id)
@@ -41,29 +44,38 @@ class HistoricalTopicsController extends Controller
         $historicalTopic = HistoricalTopics::find($id);
 
         if (!$historicalTopic) {
-            return response()->json([
-                'success'   => false,
-                'message'   => 'Historical Topic Not Found',
-                'data'      => []
-            ], 404);
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Historical Topic Not Found',
+                    'data' => [],
+                ],
+                404,
+            );
         }
 
-        return response()->json([
-            'success'   => true,
-            'message'   => 'Historical Topic Get By Id Retrieved Successfully',
-            'data'      => $historicalTopic
-        ], 200);
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'Historical Topic Get By Id Retrieved Successfully',
+                'data' => $historicalTopic,
+            ],
+            200,
+        );
     }
 
     public function getBySlug($slug)
     {
         $historicalTopic = HistoricalTopics::where('slug', $slug)->first();
 
-        return response()->json([
-            'success'   => true,
-            'message'   => 'Historical Topic Get By Slug Retrieved Successfully',
-            'data'      => $historicalTopic
-        ], 200);
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'Historical Topic Get By Slug Retrieved Successfully',
+                'data' => $historicalTopic,
+            ],
+            200,
+        );
     }
 
     public function store(Request $request)
@@ -74,31 +86,44 @@ class HistoricalTopicsController extends Controller
             'content' => 'required',
             'start_year' => 'required',
             'end_year' => 'required',
-            'thumbnail' => 'required',
+            'thumbnail' => 'required|file|image', 
             'video_url' => 'required',
             'province_id' => 'required|exists:provinces,id',
             'city_id' => 'required|exists:cities,id',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success'   => false,
-                'message'   => 'Validation Error',
-                'data'      => $validator->errors()
-            ], 400);
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Validation Error',
+                    'data' => $validator->errors(),
+                ],
+                400,
+            );
         }
 
         $data = $request->all();
         $data['slug'] = Str::slug($data['title']);
         $data['video_url'] = $this->convertToEmbedUrl($data['video_url']);
 
+        if ($request->hasFile('thumbnail')) {
+            $file = $request->file('thumbnail');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('historical_topics', $filename, 'public');
+            $data['thumbnail'] = url('storage/historical_topics/' . $filename);
+        }
+
         $historicalTopic = HistoricalTopics::create($data);
 
-        return response()->json([
-            'success'   => true,
-            'message'   => 'Historical Topic Created Successfully',
-            'data'      => $historicalTopic
-        ], 200);
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'Historical Topic Created Successfully',
+                'data' => $historicalTopic,
+            ],
+            200,
+        );
     }
 
     public function update(Request $request, $id)
@@ -109,40 +134,56 @@ class HistoricalTopicsController extends Controller
             'content' => 'required',
             'start_year' => 'required',
             'end_year' => 'required',
-            'thumbnail' => 'required',
+            'thumbnail' => 'nullable|file|image',
             'video_url' => 'required',
             'province_id' => 'required|exists:provinces,id',
             'city_id' => 'required|exists:cities,id',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success'   => false,
-                'message'   => 'Validation Error',
-                'data'      => $validator->errors()
-            ], 400);
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Validation Error',
+                    'data' => $validator->errors(),
+                ],
+                400,
+            );
         }
 
         $historicalTopic = HistoricalTopics::find($id);
 
         if (!$historicalTopic) {
-            return response()->json([
-                'success'   => false,
-                'message'   => 'Historical Topic Not Found',
-                'data'      => []
-            ], 404);
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Historical Topic Not Found',
+                    'data' => [],
+                ],
+                404,
+            );
         }
 
         $data = $request->all();
         $data['video_url'] = $this->convertToEmbedUrl($data['video_url']);
-        
+
+        if ($request->hasFile('thumbnail')) {
+            $file = $request->file('thumbnail');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('historical_topics', $filename, 'public');
+            $data['thumbnail'] = url('storage/historical_topics/' . $filename);
+        }
+
         $historicalTopic->update($data);
 
-        return response()->json([
-            'success'   => true,
-            'message'   => 'Historical Topic Updated Successfully',
-            'data'      => $historicalTopic
-        ], 200);
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'Historical Topic Updated Successfully',
+                'data' => $historicalTopic,
+            ],
+            200,
+        );
     }
 
     public function destroy($id)
@@ -150,19 +191,24 @@ class HistoricalTopicsController extends Controller
         $historicalTopic = HistoricalTopics::find($id);
 
         if (!$historicalTopic) {
-            return response()->json([
-                'success'   => false,
-                'message'   => 'Historical Topic Not Found',
-                'data'      => []
-            ], 404);
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Historical Topic Not Found',
+                    'data' => [],
+                ],
+                404,
+            );
         }
 
         $historicalTopic->delete();
 
-        return response()->json([
-            'success'   => true,
-            'message'   => 'Historical Topic Deleted Successfully',
-        ], 200);
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'Historical Topic Deleted Successfully',
+            ],
+            200,
+        );
     }
-    
 }

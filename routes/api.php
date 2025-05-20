@@ -18,7 +18,7 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
 Route::group(['prefix' => 'historical-topics', 'as' => 'historical-topics.'], function () {
     Route::get('/', [HistoricalTopicsController::class, 'index']);
     Route::get('/{id}', [HistoricalTopicsController::class, 'getById']);
-    Route::get('/{slug}', [HistoricalTopicsController::class, 'getBySlug']);
+    Route::get('/slug/{slug}', [HistoricalTopicsController::class, 'getBySlug']);
     Route::post('/', [HistoricalTopicsController::class, 'store']);
     Route::put('/{id}', [HistoricalTopicsController::class, 'update']);
     Route::delete('/{id}', [HistoricalTopicsController::class, 'destroy']);
