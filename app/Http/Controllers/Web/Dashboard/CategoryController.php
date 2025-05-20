@@ -34,11 +34,11 @@ class CategoryController extends Controller
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('categories', $filename, 'public');
-            $validated['image'] = 'storage/categories/' . $filename;
+            $validated['image'] = url('storage/categories/' . $filename);
         }
 
         Categories::create($validated);
-        return redirect()->route('category.index')->with('success', 'Kategori berhasil ditambahkan!');
+        return redirect()->route('categories.index')->with('success', 'Kategori berhasil ditambahkan!');
     }
 
     public function edit($id)
@@ -61,16 +61,16 @@ class CategoryController extends Controller
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('categories', $filename, 'public');
-            $validated['image'] = 'storage/categories/' . $filename;
+            $validated['image'] = url('storage/categories/' . $filename);
         }
         $category->update($validated);
-        return redirect()->route('category.index')->with('success', 'Kategori berhasil diupdate!');
+        return redirect()->route('categories.index')->with('success', 'Kategori berhasil diupdate!');
     }
 
     public function destroy($id)
     {
         $category = Categories::findOrFail($id);
         $category->delete();
-        return redirect()->route('category.index')->with('success', 'Kategori berhasil dihapus!');
+        return redirect()->route('categories.index')->with('success', 'Kategori berhasil dihapus!');
     }
 }
