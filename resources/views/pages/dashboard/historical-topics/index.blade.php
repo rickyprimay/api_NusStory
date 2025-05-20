@@ -9,6 +9,9 @@
     </div>
 
     @include('pages.dashboard.historical-topics._partials.table')
+    @foreach ($historicalTopics as $historicalTopic)
+        @include('pages.dashboard.historical-topics._partials.delete-modal')
+    @endforeach
 
   </div>
 </x-layout>

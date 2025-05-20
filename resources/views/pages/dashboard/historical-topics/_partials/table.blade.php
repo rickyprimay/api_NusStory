@@ -52,10 +52,10 @@
                   </td>
                   <td class="border-b px-4 py-5">
                       <div class="flex items-center space-x-3.5">
-                        <button class="hover:text-primary" >
+                        <a href="{{ route('historical-topics.edit', $historicalTopic->id) }}" class="hover:text-primary" >
                             <i class="fa-solid fa-pencil text-blue-500"></i>
-                        </button>
-                          <button class="hover:text-primary">
+                        </a>
+                          <button data-modal-target="delete-modal-{{ $historicalTopic->id }}" data-modal-toggle="delete-modal-{{ $historicalTopic->id }}" class="hover:text-primary">
                               <i class="fas fa-trash-alt text-red-500"></i>
                           </button>
                       </div>
