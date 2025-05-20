@@ -37,7 +37,6 @@
               <a class="flex items-center gap-4" href="#" @click.prevent="dropdownOpen = ! dropdownOpen">
                   <span class="hidden text-right lg:block">
                       <span class="block text-sm font-medium text-black">{{ session('user_name') }}</span>
-                      <span class="block text-xs font-medium">{{ session('user_role') }}</span>
                   </span>
 
                   <span class="h-12 w-12 bg-gray-200 rounded-full flex items-center justify-center">

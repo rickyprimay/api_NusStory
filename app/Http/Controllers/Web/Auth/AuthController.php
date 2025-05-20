@@ -21,11 +21,19 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
+
         if ($validate->fails()) {
             return redirect()->back()->withErrors($validate)->withInput();
         }
 
         if (Auth::attempt($request->only('email', 'password'))) {
+
+            $user = Auth::user();
+
+            session([
+                'user_name' => $user->name,
+            ]);
+
             return redirect()->route('dashboard')->with('success_toast', 'Login successful');
         }
 
