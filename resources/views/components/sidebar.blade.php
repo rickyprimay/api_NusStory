@@ -50,7 +50,6 @@
                         </a>
                     </li>
                     
-                    @if(session('user_role') == 'Admin')
                     <li>
                         <a href="{{ route('historical-topics.index') }}"
                            class="group relative flex items-center gap-2.5 rounded-md px-4 py-2 font-medium duration-300 ease-in-out
@@ -62,31 +61,6 @@
                             Historical Topics
                         </a>
                     </li>
-
-                    <li>
-                        <a href="{{ route('provinces.index') }}"
-                           class="group relative flex items-center gap-2.5 rounded-md px-4 py-2 font-medium duration-300 ease-in-out
-                            hover:bg-graydark hover:text-white
-                            {{ request()->routeIs('provinces.*') ? 'bg-graydark text-white' : 'text-black' }}">
-                           
-                           <i class="fa-solid fa-map-location-dot"></i>
-                        
-                            Provinces
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('cities.index') }}"
-                           class="group relative flex items-center gap-2.5 rounded-md px-4 py-2 font-medium duration-300 ease-in-out
-                            hover:bg-graydark hover:text-white
-                            {{ request()->routeIs('cities.*') ? 'bg-graydark text-white' : 'text-black' }}">
-                           
-                           <i class="fa-solid fa-city"></i>
-                        
-                            Cities
-                        </a>
-                    </li>
-                    @endif
                 </ul>
             </div>
         </nav>

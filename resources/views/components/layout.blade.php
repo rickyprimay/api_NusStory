@@ -29,7 +29,7 @@
   <script defer src="{{ asset('js/bundle.js') }}"></script>
   @stack('scripts')
 
-  @if (session('toast_error'))
+  @if (session('error'))
     <script>
       Swal.fire({
         toast: true,
@@ -42,7 +42,7 @@
     </script>
   @endif
 
-  @if (session('toast_success'))
+  @if (session('success'))
     <script>
       Swal.fire({
         toast: true,
