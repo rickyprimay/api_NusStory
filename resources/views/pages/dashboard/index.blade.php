@@ -4,7 +4,7 @@
       <div class="bg-blue-100 rounded-xl flex items-center justify-between p-8 relative overflow-hidden">
         <div>
           <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2 flex items-center gap-2">
-            Good afternoon, {{ session('user_name') }}
+            {{ \App\Helpers\Time::greeting() }}, {{ session('user_name') }}
             <span class="text-3xl md:text-4xl">👋</span>
           </h1>
           <p class="text-gray-600 text-lg">Here is what's happening with your projects today:</p>
