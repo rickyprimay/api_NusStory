@@ -10,6 +10,21 @@ use Illuminate\Support\Str;
 
 class HistoricalTopicsController extends Controller
 {
+    private function convertToEmbedUrl($url)
+    {
+        $videoId = null;
+        
+        if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $url, $matches)) {
+            $videoId = $matches[1];
+        }
+        
+        if ($videoId) {
+            return "https://www.youtube.com/embed/" . $videoId;
+        }
+        
+        return $url; 
+    }
+
     public function index()
     {
         $historicalTopics = HistoricalTopics::all();
@@ -75,6 +90,7 @@ class HistoricalTopicsController extends Controller
 
         $data = $request->all();
         $data['slug'] = Str::slug($data['title']);
+        $data['video_url'] = $this->convertToEmbedUrl($data['video_url']);
 
         $historicalTopic = HistoricalTopics::create($data);
 
@@ -117,7 +133,10 @@ class HistoricalTopicsController extends Controller
             ], 404);
         }
 
-        $historicalTopic->update($request->all());
+        $data = $request->all();
+        $data['video_url'] = $this->convertToEmbedUrl($data['video_url']);
+        
+        $historicalTopic->update($data);
 
         return response()->json([
             'success'   => true,

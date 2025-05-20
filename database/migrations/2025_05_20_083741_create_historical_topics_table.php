@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('video_url');
             $table->foreignId('province_id')->constrained('provinces')->onDelete('cascade');
             $table->foreignId('city_id')->constrained('cities')->onDelete('cascade');
+            $table->string('slug');
             $table->timestamps();
         });
     }
