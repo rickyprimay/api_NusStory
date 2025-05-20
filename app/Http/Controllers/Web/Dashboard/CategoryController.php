@@ -18,7 +18,7 @@ class CategoryController extends Controller
 
     public function create()
     {
-        return view('pages.dashboard.category._partials.create');
+        return view('pages.dashboard.category._partials.add');
     }
 
     public function store(Request $request)
