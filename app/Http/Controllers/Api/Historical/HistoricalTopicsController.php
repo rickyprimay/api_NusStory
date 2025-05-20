@@ -7,6 +7,7 @@ use App\Models\HistoricalTopics;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Http\Resources\HistoricalTopicResource;
 
 class HistoricalTopicsController extends Controller
 {
@@ -27,13 +28,12 @@ class HistoricalTopicsController extends Controller
 
     public function index()
     {
-        $historicalTopics = HistoricalTopics::all();
-
+        $historicalTopics = HistoricalTopics::with(['province', 'city'])->get();
         return response()->json(
             [
                 'success' => true,
                 'message' => 'Historical Topics Retrieved Successfully',
-                'data' => $historicalTopics,
+                'data' => HistoricalTopicResource::collection($historicalTopics),
             ],
             200,
         );
@@ -41,7 +41,7 @@ class HistoricalTopicsController extends Controller
 
     public function getById($id)
     {
-        $historicalTopic = HistoricalTopics::find($id);
+        $historicalTopic = HistoricalTopics::with(['province', 'city'])->find($id);
 
         if (!$historicalTopic) {
             return response()->json(
@@ -58,7 +58,7 @@ class HistoricalTopicsController extends Controller
             [
                 'success' => true,
                 'message' => 'Historical Topic Get By Id Retrieved Successfully',
-                'data' => $historicalTopic,
+                'data' => new HistoricalTopicResource($historicalTopic),
             ],
             200,
         );
@@ -66,13 +66,13 @@ class HistoricalTopicsController extends Controller
 
     public function getBySlug($slug)
     {
-        $historicalTopic = HistoricalTopics::where('slug', $slug)->first();
+        $historicalTopic = HistoricalTopics::with(['province', 'city'])->where('slug', $slug)->first();
 
         return response()->json(
             [
                 'success' => true,
                 'message' => 'Historical Topic Get By Slug Retrieved Successfully',
-                'data' => $historicalTopic,
+                'data' => new HistoricalTopicResource($historicalTopic),
             ],
             200,
         );

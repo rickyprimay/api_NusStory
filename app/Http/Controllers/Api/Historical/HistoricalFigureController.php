@@ -7,6 +7,7 @@ use App\Models\HistoricalFigures;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Http\Resources\HistoricalFigureResource;
 
 class HistoricalFigureController extends Controller
 {
@@ -24,17 +25,17 @@ class HistoricalFigureController extends Controller
 
     public function index()
     {
-        $figures = HistoricalFigures::all();
+        $figures = HistoricalFigures::with(['province', 'city'])->get();
         return response()->json([
             'success' => true,
             'message' => 'Historical Figures Retrieved Successfully',
-            'data' => $figures,
+            'data' => HistoricalFigureResource::collection($figures),
         ], 200);
     }
 
     public function getById($id)
     {
-        $figure = HistoricalFigures::find($id);
+        $figure = HistoricalFigures::with(['province', 'city'])->find($id);
         if (!$figure) {
             return response()->json([
                 'success' => false,
@@ -45,17 +46,17 @@ class HistoricalFigureController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Historical Figure Get By Id Retrieved Successfully',
-            'data' => $figure,
+            'data' => new HistoricalFigureResource($figure),
         ], 200);
     }
 
     public function getBySlug($slug)
     {
-        $figure = HistoricalFigures::where('slug', $slug)->first();
+        $figure = HistoricalFigures::with(['province', 'city'])->where('slug', $slug)->first();
         return response()->json([
             'success' => true,
             'message' => 'Historical Figure Get By Slug Retrieved Successfully',
-            'data' => $figure,
+            'data' => new HistoricalFigureResource($figure),
         ], 200);
     }
 
