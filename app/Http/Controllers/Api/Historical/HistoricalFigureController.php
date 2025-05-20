@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Historical;
 
+use App\Helpers\ConvertToEmbed;
 use App\Http\Controllers\Controller;
 use App\Models\HistoricalFigures;
 use Illuminate\Http\Request;
@@ -11,18 +12,6 @@ use App\Http\Resources\HistoricalFigureResource;
 
 class HistoricalFigureController extends Controller
 {
-    private function convertToEmbedUrl($url)
-    {
-        $videoId = null;
-        if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $url, $matches)) {
-            $videoId = $matches[1];
-        }
-        if ($videoId) {
-            return 'https://www.youtube.com/embed/' . $videoId;
-        }
-        return $url;
-    }
-
     public function index()
     {
         $figures = HistoricalFigures::with(['province', 'city'])->paginate(10);
@@ -87,7 +76,7 @@ class HistoricalFigureController extends Controller
 
         $data = $request->all();
         $data['slug'] = Str::slug($data['name']);
-        $data['video_url'] = $this->convertToEmbedUrl($data['video_url']);
+        $data['video_url'] = ConvertToEmbed::youtube($data['video_url']);
 
         if ($request->hasFile('thumbnail')) {
             $file = $request->file('thumbnail');
@@ -137,7 +126,7 @@ class HistoricalFigureController extends Controller
         }
 
         $data = $request->all();
-        $data['video_url'] = $this->convertToEmbedUrl($data['video_url']);
+        $data['video_url'] = ConvertToEmbed::youtube($data['video_url']);
 
         if ($request->hasFile('thumbnail')) {
             $file = $request->file('thumbnail');
