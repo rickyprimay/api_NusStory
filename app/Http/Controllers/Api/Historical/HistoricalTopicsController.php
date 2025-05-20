@@ -162,7 +162,6 @@ class HistoricalTopicsController extends Controller
         return response()->json([
             'success'   => true,
             'message'   => 'Historical Topic Deleted Successfully',
-            'data'      => []
         ], 200);
     }
     
