@@ -56,6 +56,7 @@ class HistoricalTopicsController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required',
             'description' => 'required',
+            'content' => 'required',
             'start_year' => 'required',
             'end_year' => 'required',
             'thumbnail' => 'required',
@@ -89,6 +90,7 @@ class HistoricalTopicsController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required',
             'description' => 'required',
+            'content' => 'required',
             'start_year' => 'required',
             'end_year' => 'required',
             'thumbnail' => 'required',
