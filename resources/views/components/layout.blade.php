@@ -34,7 +34,7 @@
       Swal.fire({
         toast: true,
         icon: 'error',
-        title: '{{ session('toast_error') }}',
+        title: '{{ session('error') }}',
         position: 'top-end',
         showConfirmButton: false,
         timer: 3000
@@ -47,7 +47,7 @@
       Swal.fire({
         toast: true,
         icon: 'success',
-        title: '{{ session('toast_success') }}',
+        title: '{{ session('success') }}',
         position: 'top-end',
         showConfirmButton: false,
         timer: 3000
