@@ -25,12 +25,15 @@ class HistoricalFigureController extends Controller
 
     public function index()
     {
-        $figures = HistoricalFigures::with(['province', 'city'])->get();
+        $figures = HistoricalFigures::with(['province', 'city'])->paginate(10);
+        $data = HistoricalFigureResource::collection($figures)->response()->getData(true);
         return response()->json([
             'success' => true,
             'message' => 'Historical Figures Retrieved Successfully',
-            'data' => HistoricalFigureResource::collection($figures),
-        ], 200);
+            'data' => $data['data'],
+            'links' => $data['links'],
+            'meta' => $data['meta'],
+        ]);
     }
 
     public function getById($id)

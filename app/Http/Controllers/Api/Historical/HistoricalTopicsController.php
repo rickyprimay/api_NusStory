@@ -28,15 +28,17 @@ class HistoricalTopicsController extends Controller
 
     public function index()
     {
-        $historicalTopics = HistoricalTopics::with(['province', 'city'])->get();
-        return response()->json(
-            [
-                'success' => true,
-                'message' => 'Historical Topics Retrieved Successfully',
-                'data' => HistoricalTopicResource::collection($historicalTopics),
-            ],
-            200,
-        );
+        $figures = HistoricalTopics::with(['province', 'city'])->paginate(10);
+
+        $data = HistoricalTopicResource::collection($figures)->response()->getData(true);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Historical Topics Retrieved Successfully',
+            'data' => $data['data'],
+            'links' => $data['links'],
+            'meta' => $data['meta'],
+        ]);
     }
 
     public function getById($id)
@@ -66,7 +68,9 @@ class HistoricalTopicsController extends Controller
 
     public function getBySlug($slug)
     {
-        $historicalTopic = HistoricalTopics::with(['province', 'city'])->where('slug', $slug)->first();
+        $historicalTopic = HistoricalTopics::with(['province', 'city'])
+            ->where('slug', $slug)
+            ->first();
 
         return response()->json(
             [
@@ -86,7 +90,7 @@ class HistoricalTopicsController extends Controller
             'content' => 'required',
             'start_year' => 'required',
             'end_year' => 'required',
-            'thumbnail' => 'required|file|image', 
+            'thumbnail' => 'required|file|image',
             'video_url' => 'required',
             'province_id' => 'required|exists:provinces,id',
             'city_id' => 'required|exists:cities,id',
