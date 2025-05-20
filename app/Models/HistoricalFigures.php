@@ -17,4 +17,9 @@ class HistoricalFigures extends Model
     {
         return $this->belongsTo(City::class);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Categories::class);
+    }
 }
