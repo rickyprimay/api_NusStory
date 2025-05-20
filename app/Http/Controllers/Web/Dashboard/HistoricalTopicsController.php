@@ -64,7 +64,7 @@ class HistoricalTopicsController extends Controller
     {
         $historicalTopic = HistoricalTopics::findOrFail($id);
         $provinces = Province::all();
-        $cities = City::all();
+        $cities = City::where('province_id', $historicalTopic->province_id)->get();
         return view('pages.dashboard.historical-topics._partials.edit', compact('historicalTopic', 'provinces', 'cities'));
     }
 

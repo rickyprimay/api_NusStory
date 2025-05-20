@@ -23,5 +23,10 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 
     Route::prefix('historical-figure')->group(function () {
         Route::get('/', [HistoricalFigureController::class, 'index'])->name('historical-figure.index');
+        Route::get('/create', [HistoricalFigureController::class, 'create'])->name('historical-figure.create');
+        Route::post('/', [HistoricalFigureController::class, 'store'])->name('historical-figure.store');
+        Route::get('/{id}/edit', [HistoricalFigureController::class, 'edit'])->name('historical-figure.edit');
+        Route::put('/{id}', [HistoricalFigureController::class, 'update'])->name('historical-figure.update');
+        Route::delete('/{id}', [HistoricalFigureController::class, 'destroy'])->name('historical-figure.destroy');
     });
 });

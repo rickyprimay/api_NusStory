@@ -21,7 +21,7 @@ class HistoricalFigureController extends Controller
     public function create()
     {
         $provinces = Province::all();
-        return view('pages.dashboard.historical-figure.create', compact('provinces'));
+        return view('pages.dashboard.historical-figure._partials.add', compact('provinces'));
     }
 
     public function store(Request $request)
@@ -56,7 +56,7 @@ class HistoricalFigureController extends Controller
         $figure = HistoricalFigures::findOrFail($id);
         $provinces = Province::all();
         $cities = City::where('province_id', $figure->province_id)->get();
-        return view('pages.dashboard.historical-figure.edit', compact('figure', 'provinces', 'cities'));
+        return view('pages.dashboard.historical-figure._partials.edit', compact('figure', 'provinces', 'cities'));
     }
 
     public function update(Request $request, $id)
