@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Auth\GoogleController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Historical\HistoricalFigureController;
 use App\Http\Controllers\Api\Historical\HistoricalTopicsController;
 use App\Http\Controllers\Api\Location\LocationController;
 use Illuminate\Support\Facades\Route;
@@ -22,4 +23,13 @@ Route::group(['prefix' => 'historical-topics', 'as' => 'historical-topics.'], fu
     Route::post('/', [HistoricalTopicsController::class, 'store']);
     Route::put('/{id}', [HistoricalTopicsController::class, 'update']);
     Route::delete('/{id}', [HistoricalTopicsController::class, 'destroy']);
+});
+
+Route::group(['prefix' => 'historical-figures', 'as' => 'historical-figures.'], function () {
+    Route::get('/', [HistoricalFigureController::class, 'index']);
+    Route::get('/{id}', [HistoricalFigureController::class, 'getById']);
+    Route::get('/slug/{slug}', [HistoricalFigureController::class, 'getBySlug']);
+    Route::post('/', [HistoricalFigureController::class, 'store']);
+    Route::put('/{id}', [HistoricalFigureController::class, 'update']);
+    Route::delete('/{id}', [HistoricalFigureController::class, 'destroy']);
 });
