@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('died_year');
             $table->string('thumbnail');
             $table->string('video_url');
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('province_id')->constrained('provinces')->onDelete('cascade');
             $table->foreignId('city_id')->constrained('cities')->onDelete('cascade');
             $table->string('slug');
