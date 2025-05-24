@@ -39,4 +39,11 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
         Route::get('/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
         Route::put('/{id}', [CategoryController::class, 'update'])->name('categories.update');
     });
+
+    // Story Province Routes
+    Route::get('/story-provinces', [App\Http\Controllers\Web\Dashboard\StoryProvinceController::class, 'index'])->name('story-provinces.index');
+    Route::get('/story-provinces/{id}', [App\Http\Controllers\Web\Dashboard\StoryProvinceController::class, 'show'])->name('story-provinces.show');
+    
+    // Story Province Detail Routes
+    Route::resource('story-province-details', App\Http\Controllers\Web\Dashboard\StoryProvinceDetailController::class);
 });
