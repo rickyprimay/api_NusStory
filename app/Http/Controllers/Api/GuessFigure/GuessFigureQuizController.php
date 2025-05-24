@@ -12,10 +12,8 @@ class GuessFigureQuizController extends Controller
 {
     public function index()
     {
-        $quizzes = GuessFigureQuiz::with('questions.historicalFigure')
-            ->where('is_active', true)
-            ->get();
-
+        $quizzes = GuessFigureQuiz::withCount('questions')->get();
+        
         return response()->json([
             'status' => 'success',
             'data' => $quizzes
@@ -51,7 +49,7 @@ class GuessFigureQuizController extends Controller
         $question = GuessFigureQuestion::where('quiz_id', $quizId)
             ->where('id', $questionId)
             ->firstOrFail();
-        
+
         $distance = $this->calculateDistance(
             $request->latitude,
             $request->longitude,
