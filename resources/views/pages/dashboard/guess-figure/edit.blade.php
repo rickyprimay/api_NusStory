@@ -16,15 +16,6 @@
                     <label for="description" class="block mb-2 text-sm font-medium text-gray-900">Deskripsi</label>
                     <textarea name="description" id="description" rows="3" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">{{ old('description', $quiz->description) }}</textarea>
                 </div>
-                <div>
-                    <label for="category_id" class="block mb-2 text-sm font-medium text-gray-900">Kategori</label>
-                    <select name="category_id" id="category_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
-                        <option value="">Pilih Kategori</option>
-                        @foreach($categories as $category)
-                            <option value="{{ $category->id }}" {{ old('category_id', $quiz->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
             </div>
 
             <div id="questions-container">

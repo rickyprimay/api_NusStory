@@ -48,5 +48,7 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     // Story Province Detail Routes
     Route::resource('story-province-details', App\Http\Controllers\Web\Dashboard\StoryProvinceDetailController::class);
 
-    Route::resource('guess-figure', GuessFigureQuizController::class);
+    Route::resource('guess-figure', GuessFigureQuizController::class)->parameters([
+        'guess-figure' => 'guessFigureQuiz'
+    ]);
 });

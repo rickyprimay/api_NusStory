@@ -19,11 +19,6 @@
             </div>
         @endif
 
-        <div class="mb-6">
-            <h2 class="text-lg font-medium text-gray-900 mb-2">Kategori</h2>
-            <p class="text-gray-700">{{ $quiz->category->name }}</p>
-        </div>
-
         <div class="space-y-6">
             <h2 class="text-lg font-medium text-gray-900">Daftar Pertanyaan</h2>
             @foreach($quiz->questions as $question)
