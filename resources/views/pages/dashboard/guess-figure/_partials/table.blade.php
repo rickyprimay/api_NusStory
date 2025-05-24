@@ -5,6 +5,7 @@
                 <th class="min-w-[50px] px-4 py-4 font-medium text-black">No</th>
                 <th class="min-w-[150px] px-4 py-4 font-medium text-black">Judul Quiz</th>
                 <th class="min-w-[150px] px-4 py-4 font-medium text-black">Deskripsi</th>
+                <th class="min-w-[150px] px-4 py-4 font-medium text-black">Kategori</th>
                 <th class="min-w-[100px] px-4 py-4 font-medium text-black">Jumlah Soal</th>
                 <th class="px-4 py-4 font-medium text-black">Aksi</th>
             </tr>
@@ -20,6 +21,9 @@
                     </td>
                     <td class="border-b px-4 py-5">
                         <p class="text-black">{{ Str::limit($quiz->description, 50) }}</p>
+                    </td>
+                    <td class="border-b px-4 py-5">
+                        <p class="text-black">{{ $quiz->category->name }}</p>
                     </td>
                     <td class="border-b px-4 py-5">
                         <p class="text-black">{{ $quiz->questions->count() }}</p>
@@ -40,7 +44,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" class="text-center px-4 py-5 text-gray-500">
+                    <td colspan="6" class="text-center px-4 py-5 text-gray-500">
                         Tidak ada Quiz.
                     </td>
                 </tr>

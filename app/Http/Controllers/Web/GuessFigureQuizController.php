@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\GuessFigureQuiz;
 use App\Models\GuessFigureQuestion;
 use App\Models\HistoricalFigures;
+use App\Models\Categories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,14 +14,15 @@ class GuessFigureQuizController extends Controller
 {
     public function index()
     {
-        $quizzes = GuessFigureQuiz::with('questions.historicalFigure')->get();
+        $quizzes = GuessFigureQuiz::with(['questions.historicalFigure', 'category'])->get();
         return view('pages.dashboard.guess-figure.index', compact('quizzes'));
     }
 
     public function create()
     {
         $historicalFigures = HistoricalFigures::all();
-        return view('pages.dashboard.guess-figure.create', compact('historicalFigures'));
+        $categories = Categories::all();
+        return view('pages.dashboard.guess-figure.create', compact('historicalFigures', 'categories'));
     }
 
     public function store(Request $request)
@@ -28,6 +30,7 @@ class GuessFigureQuizController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
             'questions' => 'required|array|min:1',
             'questions.*.historical_figure_id' => 'required|exists:historical_figures,id',
             'questions.*.image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
@@ -40,6 +43,7 @@ class GuessFigureQuizController extends Controller
         $quiz = GuessFigureQuiz::create([
             'title' => $request->title,
             'description' => $request->description,
+            'category_id' => $request->category_id,
             'is_active' => true
         ]);
 
@@ -62,15 +66,16 @@ class GuessFigureQuizController extends Controller
 
     public function show(GuessFigureQuiz $guessFigureQuiz)
     {
-        $quiz = $guessFigureQuiz->load('questions.historicalFigure');
+        $quiz = $guessFigureQuiz->load(['questions.historicalFigure', 'category']);
         return view('pages.dashboard.guess-figure.show', compact('quiz'));
     }
 
     public function edit(GuessFigureQuiz $guessFigureQuiz)
     {
-        $quiz = $guessFigureQuiz->load('questions.historicalFigure');
+        $quiz = $guessFigureQuiz->load(['questions.historicalFigure', 'category']);
         $historicalFigures = HistoricalFigures::all();
-        return view('pages.dashboard.guess-figure.edit', compact('quiz', 'historicalFigures'));
+        $categories = Categories::all();
+        return view('pages.dashboard.guess-figure.edit', compact('quiz', 'historicalFigures', 'categories'));
     }
 
     public function update(Request $request, GuessFigureQuiz $guessFigureQuiz)
@@ -78,6 +83,7 @@ class GuessFigureQuizController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
             'questions' => 'required|array|min:1',
             'questions.*.id' => 'nullable|exists:guess_figure_questions,id',
             'questions.*.historical_figure_id' => 'required|exists:historical_figures,id',
@@ -90,7 +96,8 @@ class GuessFigureQuizController extends Controller
 
         $guessFigureQuiz->update([
             'title' => $request->title,
-            'description' => $request->description
+            'description' => $request->description,
+            'category_id' => $request->category_id
         ]);
 
         // Delete removed questions

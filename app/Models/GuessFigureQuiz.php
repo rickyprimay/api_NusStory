@@ -13,4 +13,9 @@ class GuessFigureQuiz extends Model
     {
         return $this->hasMany(GuessFigureQuestion::class, 'quiz_id')->orderBy('order');
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Categories::class, 'category_id');
+    }
 } 

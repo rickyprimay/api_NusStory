@@ -39,6 +39,16 @@
                     </select>
                 </div>
                 <div>
+                    <label for="category_id" class="block mb-2 text-sm font-medium text-gray-900">Kategori</label>
+                    <select name="category_id" id="category_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                        <option value="">Pilih Kategori</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                
+                <div>
                     <label for="thumbnail" class="block mb-2 text-sm font-medium text-gray-900">Thumbnail</label>
                     <input type="file" name="thumbnail" id="thumbnail" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" accept="image/*" required>
                 </div>

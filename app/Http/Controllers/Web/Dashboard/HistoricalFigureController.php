@@ -8,20 +8,23 @@ use App\Models\HistoricalFigures;
 use App\Models\Province;
 use App\Models\City;
 use App\Helpers\ConvertToEmbed;
+use App\Models\Categories;
 use Illuminate\Support\Str;
 
 class HistoricalFigureController extends Controller
 {
     public function index()
     {
+        $categories = Categories::all();
         $figures = HistoricalFigures::with(['province', 'city'])->paginate(10);
-        return view('pages.dashboard.historical-figure.index', compact('figures'));
+        return view('pages.dashboard.historical-figure.index', compact('figures', 'categories'));
     }
 
     public function create()
     {
+        $categories = Categories::all();
         $provinces = Province::all();
-        return view('pages.dashboard.historical-figure._partials.add', compact('provinces'));
+        return view('pages.dashboard.historical-figure._partials.add', compact('provinces', 'categories'));
     }
 
     public function store(Request $request)
@@ -32,6 +35,7 @@ class HistoricalFigureController extends Controller
             'content' => 'required',
             'born_year' => 'required|integer',
             'died_year' => 'required|integer',
+            'category_id' => 'required|exists:categories,id',
             'thumbnail' => 'required|image',
             'video_url' => 'required',
             'province_id' => 'required|exists:provinces,id',
@@ -44,7 +48,7 @@ class HistoricalFigureController extends Controller
             $file = $request->file('thumbnail');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('historical_figures', $filename, 'public');
-            $validated['thumbnail'] = 'storage/historical_figures/' . $filename;
+            $validated['thumbnail'] = url('storage/historical_figures/' . $filename);
         }
 
         HistoricalFigures::create($validated);
@@ -55,8 +59,9 @@ class HistoricalFigureController extends Controller
     {
         $figure = HistoricalFigures::findOrFail($id);
         $provinces = Province::all();
+        $categories = Categories::all();
         $cities = City::where('province_id', $figure->province_id)->get();
-        return view('pages.dashboard.historical-figure._partials.edit', compact('figure', 'provinces', 'cities'));
+        return view('pages.dashboard.historical-figure._partials.edit', compact('figure', 'provinces', 'cities', 'categories'));
     }
 
     public function update(Request $request, $id)
@@ -68,6 +73,7 @@ class HistoricalFigureController extends Controller
             'content' => 'required',
             'born_year' => 'required|integer',
             'died_year' => 'required|integer',
+            'category_id' => 'required|exists:categories,id',
             'thumbnail' => 'nullable|image',
             'video_url' => 'required',
             'province_id' => 'required|exists:provinces,id',
@@ -79,7 +85,7 @@ class HistoricalFigureController extends Controller
             $file = $request->file('thumbnail');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('historical_figures', $filename, 'public');
-            $validated['thumbnail'] = 'storage/historical_figures/' . $filename;
+            $validated['thumbnail'] = url('storage/historical_figures/' . $filename);
         }
         $figure->update($validated);
         return redirect()->route('historical-figure.index')->with('success', 'Tokoh berhasil diupdate!');
