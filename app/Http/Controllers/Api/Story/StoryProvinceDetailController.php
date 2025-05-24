@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\StoryProvinceDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class StoryProvinceDetailController extends Controller
 {
@@ -22,7 +23,7 @@ class StoryProvinceDetailController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'image' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'subtitle' => 'required|string',
             'story_province_id' => 'required|exists:story_provinces,id'
         ]);
@@ -34,7 +35,16 @@ class StoryProvinceDetailController extends Controller
             ], 422);
         }
 
-        $detail = StoryProvinceDetail::create($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('province_details', $filename, 'public');
+            $data['image'] = url('storage/province_details/' . $filename);
+        }
+
+        $detail = StoryProvinceDetail::create($data);
 
         return response()->json([
             'status' => 'success',
@@ -73,7 +83,7 @@ class StoryProvinceDetailController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'string',
-            'image' => 'string',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'subtitle' => 'string',
             'story_province_id' => 'exists:story_provinces,id'
         ]);
@@ -85,7 +95,24 @@ class StoryProvinceDetailController extends Controller
             ], 422);
         }
 
-        $detail->update($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($detail->image) {
+                $oldImagePath = str_replace(url('storage/'), 'public/', $detail->image);
+                if (Storage::exists($oldImagePath)) {
+                    Storage::delete($oldImagePath);
+                }
+            }
+
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('province_details', $filename, 'public');
+            $data['image'] = url('storage/province_details/' . $filename);
+        }
+
+        $detail->update($data);
 
         return response()->json([
             'status' => 'success',
@@ -103,6 +130,14 @@ class StoryProvinceDetailController extends Controller
                 'status' => 'error',
                 'message' => 'Province detail not found'
             ], 404);
+        }
+
+        // Delete image file if exists
+        if ($detail->image) {
+            $imagePath = str_replace(url('storage/'), 'public/', $detail->image);
+            if (Storage::exists($imagePath)) {
+                Storage::delete($imagePath);
+            }
         }
 
         $detail->delete();
