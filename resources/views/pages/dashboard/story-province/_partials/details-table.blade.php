@@ -26,7 +26,7 @@
                     </td>
                     <td class="border-b px-4 py-5">
                         <div class="flex items-center space-x-3.5">
-                            <a href="{{ route('dashboard.story-province-details.edit', $detail->id) }}" class="hover:text-primary">
+                            <a href="{{ route('story-province-details.edit', $detail->id) }}" class="hover:text-primary">
                                 <i class="fa-solid fa-pencil text-blue-500"></i>
                             </a>
                             <button data-modal-target="delete-modal-{{ $detail->id }}" data-modal-toggle="delete-modal-{{ $detail->id }}" class="hover:text-primary">

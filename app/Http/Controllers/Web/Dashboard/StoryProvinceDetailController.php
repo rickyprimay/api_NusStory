@@ -84,7 +84,6 @@ class StoryProvinceDetailController extends Controller
         $detail = StoryProvinceDetail::findOrFail($id);
         $province_id = $detail->story_province_id;
 
-        // Delete image file
         if ($detail->image) {
             $imagePath = str_replace(url('storage/'), 'public/', $detail->image);
             if (Storage::exists($imagePath)) {

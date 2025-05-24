@@ -26,7 +26,7 @@
                     </td>
                     <td class="border-b px-4 py-5">
                         <div class="flex items-center space-x-3.5">
-                            <a href="{{ route('dashboard.story-provinces.show', $province->id) }}" class="hover:text-primary">
+                            <a href="{{ route('story-provinces.show', $province->id) }}" class="hover:text-primary">
                                 <i class="fas fa-eye text-blue-500"></i>
                             </a>
                         </div>

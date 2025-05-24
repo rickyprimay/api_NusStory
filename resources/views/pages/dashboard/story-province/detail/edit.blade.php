@@ -4,7 +4,7 @@
             <h1 class="text-black font-bold text-2xl">Edit Detail Provinsi</h1>
         </div>
 
-        <form action="{{ route('dashboard.story-province-details.update', $detail->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+        <form action="{{ route('story-province-details.update', $detail->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PUT')
             <input type="hidden" name="story_province_id" value="{{ $detail->story_province_id }}">
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="flex justify-end space-x-4">
-                <a href="{{ route('dashboard.story-provinces.show', $detail->story_province_id) }}" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">
+                <a href="{{ route('story-provinces.show', $detail->story_province_id) }}" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">
                     Batal
                 </a>
                 <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
