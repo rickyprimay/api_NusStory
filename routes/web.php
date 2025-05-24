@@ -5,6 +5,7 @@ use App\Http\Controllers\Web\Dashboard\CategoryController;
 use App\Http\Controllers\Web\Dashboard\DashboardController;
 use App\Http\Controllers\Web\Dashboard\HistoricalFigureController;
 use App\Http\Controllers\Web\Dashboard\HistoricalTopicsController;
+use App\Http\Controllers\Web\GuessFigureQuizController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'index'])->name('index');
@@ -46,4 +47,6 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     
     // Story Province Detail Routes
     Route::resource('story-province-details', App\Http\Controllers\Web\Dashboard\StoryProvinceDetailController::class);
+
+    Route::resource('guess-figure', GuessFigureQuizController::class);
 });

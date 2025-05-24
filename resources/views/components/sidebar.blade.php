@@ -97,6 +97,18 @@
                             Story Provinces
                         </a>
                     </li>
+
+                    <li>
+                        <a href="{{ route('guess-figure.index') }}"
+                           class="group relative flex items-center gap-2.5 rounded-md px-4 py-2 font-medium duration-300 ease-in-out
+                            hover:bg-graydark hover:text-white
+                            {{ request()->routeIs('guess-figure.*') ? 'bg-graydark text-white' : 'text-black' }}">
+                           
+                            <i class="fa-solid fa-circle-question"></i>
+                        
+                            Guess Figure
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>
