@@ -46,7 +46,7 @@ Route::group(['prefix' => 'categories', 'as' => 'categories.'], function () {
     Route::delete('/{id}', [CategoryController::class, 'destroy']);
 });
 
-Route::prefix('provinces')->group(function () {
+Route::prefix('story-provinces')->group(function () {
     Route::get('/', [StoryProvinceController::class, 'index']);
     Route::post('/', [StoryProvinceController::class, 'store']);
     Route::get('/{id}', [StoryProvinceController::class, 'show']);
