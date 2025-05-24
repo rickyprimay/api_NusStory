@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Historical\HistoricalTopicsController;
 use App\Http\Controllers\Api\Location\LocationController;
 use App\Http\Controllers\Api\Story\StoryProvinceController;
 use App\Http\Controllers\Api\Story\StoryProvinceDetailController;
+use App\Http\Controllers\Api\GuessFigure\GuessFigureQuizController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/provinces', [LocationController::class, 'getProvince']);
@@ -61,4 +62,11 @@ Route::prefix('province-details')->group(function () {
     Route::get('/{id}', [StoryProvinceDetailController::class, 'show']);
     Route::put('/{id}', [StoryProvinceDetailController::class, 'update']);
     Route::delete('/{id}', [StoryProvinceDetailController::class, 'destroy']);
+});
+
+// Guess Figure Routes
+Route::prefix('guess-figure')->group(function () {
+    Route::get('/quizzes', [GuessFigureQuizController::class, 'index']);
+    Route::get('/quizzes/{id}', [GuessFigureQuizController::class, 'show']);
+    Route::post('/quizzes/{quizId}/questions/{questionId}/check', [GuessFigureQuizController::class, 'checkAnswer']);
 });
