@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\Category\CategoryController;
 use App\Http\Controllers\Api\Historical\HistoricalFigureController;
 use App\Http\Controllers\Api\Historical\HistoricalTopicsController;
 use App\Http\Controllers\Api\Location\LocationController;
+use App\Http\Controllers\Api\Story\StoryProvinceController;
+use App\Http\Controllers\Api\Story\StoryProvinceDetailController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/provinces', [LocationController::class, 'getProvince']);
@@ -42,4 +44,21 @@ Route::group(['prefix' => 'categories', 'as' => 'categories.'], function () {
     Route::post('/', [CategoryController::class, 'store']);
     Route::put('/{id}', [CategoryController::class, 'update']);
     Route::delete('/{id}', [CategoryController::class, 'destroy']);
+});
+
+Route::prefix('provinces')->group(function () {
+    Route::get('/', [StoryProvinceController::class, 'index']);
+    Route::post('/', [StoryProvinceController::class, 'store']);
+    Route::get('/{id}', [StoryProvinceController::class, 'show']);
+    Route::get('/slug/{slug}', [StoryProvinceController::class, 'showBySlug']);
+    Route::put('/{id}', [StoryProvinceController::class, 'update']);
+    Route::delete('/{id}', [StoryProvinceController::class, 'destroy']);
+});
+
+Route::prefix('province-details')->group(function () {
+    Route::get('/', [StoryProvinceDetailController::class, 'index']);
+    Route::post('/', [StoryProvinceDetailController::class, 'store']);
+    Route::get('/{id}', [StoryProvinceDetailController::class, 'show']);
+    Route::put('/{id}', [StoryProvinceDetailController::class, 'update']);
+    Route::delete('/{id}', [StoryProvinceDetailController::class, 'destroy']);
 });
