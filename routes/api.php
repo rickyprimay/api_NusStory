@@ -64,7 +64,6 @@ Route::prefix('province-details')->group(function () {
     Route::delete('/{id}', [StoryProvinceDetailController::class, 'destroy']);
 });
 
-// Guess Figure Routes
 Route::prefix('guess-figure')->group(function () {
     Route::get('/quizzes', [GuessFigureQuizController::class, 'index']);
     Route::get('/quizzes/{id}', [GuessFigureQuizController::class, 'show']);
