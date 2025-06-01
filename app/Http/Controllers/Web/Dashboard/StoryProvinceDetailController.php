@@ -35,7 +35,7 @@ class StoryProvinceDetailController extends Controller
 
         StoryProvinceDetail::create($data);
 
-        return redirect()->route('dashboard.story-provinces.show', $request->story_province_id)
+        return redirect()->route('story-provinces.show', $request->story_province_id)
             ->with('success', 'Detail provinsi berhasil ditambahkan');
     }
 
@@ -75,7 +75,7 @@ class StoryProvinceDetailController extends Controller
 
         $detail->update($data);
 
-        return redirect()->route('dashboard.story-provinces.show', $detail->story_province_id)
+        return redirect()->route('story-provinces.show', $detail->story_province_id)
             ->with('success', 'Detail provinsi berhasil diperbarui');
     }
 
@@ -93,7 +93,7 @@ class StoryProvinceDetailController extends Controller
 
         $detail->delete();
 
-        return redirect()->route('dashboard.story-provinces.show', $province_id)
+        return redirect()->route('story-provinces.show', $province_id)
             ->with('success', 'Detail provinsi berhasil dihapus');
     }
 } 
